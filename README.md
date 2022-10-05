@@ -41,7 +41,7 @@ In NeurIPS 2022.
 
 ### The parameters of config:
 
-    ```
+    
     - targeted attack or not : --targeted or None
     - source model: -- source_model (resnet_50, densenet, inception, vgg16)
     - random seed: --seed 1234
@@ -60,6 +60,6 @@ In NeurIPS 2022.
     - loss function: --loss_function: CE or MaxLogit for outer minimization
     - epsilon of attacks: --adv_epsilon: 16/255, the perturbation budget for - inner maximization
       --adv_steps: 8, the step for inner maximization
-    ```
+    
 
 #### This code is based on [source code from NeurIPS 2021 paper](https://github.com/ZhengyuZhao/Targeted-Tansfer) , *"On Success and Simplicity: A Second Look at Transferable Targeted Attacks"*. The used dataset is also contained in this repository. Please consider leaving a :star: on their repository.
