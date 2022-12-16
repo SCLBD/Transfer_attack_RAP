@@ -12,7 +12,6 @@ In NeurIPS 2022.
 ----
 
 ### Codes:
- - rap_attack_new.py: simple version
  - rap_attack.py: full version
 
 
@@ -22,21 +21,21 @@ In NeurIPS 2022.
 
     ```
 
-    python /targeted_attack/rap_attack_new.py --num_data_augmentation 1  --targeted  --transpoint 400 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
+    python /targeted_attack/rap_attack.py --num_data_augmentation 1  --targeted  --transpoint 400 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
     ```
 
 
 - RAP targeted attack with DI and logit loss from ResNet-50
 
     ```
-    python /targeted_attack/rap_attack_new.py --num_data_augmentation 1  --targeted  --transpoint 0 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
+    python /targeted_attack/rap_attack.py --num_data_augmentation 1  --targeted  --transpoint 0 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
     ```
 
 
 - RAP-LS targeted attack with DI and logit loss from ResNet-50
 
     ```
-    python /targeted_attack/rap_attack_new.py --num_data_augmentation 1  --targeted  --transpoint 100 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
+    python /targeted_attack/rap_attack.py --num_data_augmentation 1  --targeted  --transpoint 100 --seed 9018 --source_model resnet_50 --loss_function MaxLogit --DI --max_iterations 300
     ```
 
 ### The parameters of config:
@@ -60,11 +59,6 @@ In NeurIPS 2022.
     - loss function: --loss_function: CE or MaxLogit for outer minimization
     - epsilon of attacks: --adv_epsilon: 16/255, the perturbation budget for - inner maximization
       --adv_steps: 8, the step for inner maximization
-      
-#### Contributors
-
-[Zeyu Qin](https://github.com/Alan-Qin/), Yi Liu
     
-----
 
 #### This code is based on [source code from NeurIPS 2021 paper](https://github.com/ZhengyuZhao/Targeted-Tansfer) , *"On Success and Simplicity: A Second Look at Transferable Targeted Attacks"*. The used dataset is also contained in their repository. Please consider leaving a :star: on their repository.

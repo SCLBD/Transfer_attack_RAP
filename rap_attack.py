@@ -102,6 +102,14 @@ if arg.targeted:
     exp_name += '_target'
 
 
+# for targeted attack, we need to conduct the untargeted attack during the inner loop.
+# for untargeted attack, we need to conduct the targeted attack (the true label) during the inner loop. 
+if not arg.targeted:
+    arg.adv_targeted = 1
+else:
+    arg.adv_targeted = 0
+
+
 if arg.save:
 
     arg.file_path = "/targeted_attack/adv_example/"+exp_name
@@ -203,9 +211,18 @@ def pgd(model, data, labels, targeted, epsilon, k, a, random_start=True):
         outputs = model(norm(perturbed_data))
         if arg.adv_loss_function == 'CE':
             loss = nn.CrossEntropyLoss(reduction='sum')
-            cost = -1 * loss(outputs, labels)
+            if targeted:
+                cost = loss(outputs, labels)
+            else:
+                cost = -1 * loss(outputs, labels)
+
 
         elif arg.adv_loss_function == 'MaxLogit':
+            if targeted:
+                real = outputs.gather(1, labels.unsqueeze(1)).squeeze(1)
+                logit_dists = -1 * real
+                cost = logit_dists.sum()
+            else:
                 real = outputs.gather(1, labels.unsqueeze(1)).squeeze(1)
                 cost = real.sum()
 
@@ -370,12 +387,13 @@ for k in range(0, num_batches):
                         top_values_2, top_indices_2 = model_source(norm(X_ori+delta+X_addin)).topk(arg.m2+1, dim=1, largest=True, sorted=True)
                         
                         if arg.adv_targeted:
-
                             label_pred = labels
                         else:
                             label_pred = target_labels
-                            X_advaug = pgd(model_source, X_ori+delta+X_addin, label_pred, arg.adv_targeted, arg.adv_epsilon, arg.adv_steps, arg.adv_alpha)
-                            X_aug = X_advaug - (X_ori+delta+X_addin)
+                        
+                        X_advaug = pgd(model_source, X_ori+delta+X_addin, label_pred, arg.adv_targeted, arg.adv_epsilon, arg.adv_steps, arg.adv_alpha)
+                        X_aug = X_advaug - (X_ori+delta+X_addin)
+
                     else:
                         X_aug = torch.zeros_like(X_ori).to(device)
                     delta.requires_grad_(True)
